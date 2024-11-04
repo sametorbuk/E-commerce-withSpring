@@ -10,4 +10,9 @@ import org.springframework.http.HttpStatus;
 @Data
 public class EcommerceException extends RuntimeException{
     private HttpStatus status;
+
+    public EcommerceException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
 }

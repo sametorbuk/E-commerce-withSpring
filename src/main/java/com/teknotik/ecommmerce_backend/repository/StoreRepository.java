@@ -1,6 +1,6 @@
 package com.teknotik.ecommmerce_backend.repository;
 
-import com.teknotik.ecommmerce_backend.entity.Role;
+import com.teknotik.ecommmerce_backend.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,9 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role,Long> {
+public interface StoreRepository extends JpaRepository<Store,Long> {
 
-    @Query("SELECT r FROM Role r WHERE r.authority =:authority")
-    Optional<Role> findByAuthority(String authority);
-
+    @Query("SELECT s FROM Store s WHERE s.email = :email")
+    Optional<Store> findByEmail(String email);
 }
