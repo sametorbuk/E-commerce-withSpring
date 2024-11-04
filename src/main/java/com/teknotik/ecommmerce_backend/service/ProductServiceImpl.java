@@ -25,8 +25,6 @@ public class ProductServiceImpl implements ProductService{
         this.categoryRepository=categoryRepository;
     }
 
-
-
     public void saveProducts(){
         RestTemplate restTemplate =new RestTemplate();
         String url="https://workintech-fe-ecommerce.onrender.com/products?page=%d&limit=300";
@@ -51,5 +49,11 @@ public class ProductServiceImpl implements ProductService{
             productRepository.saveAll(products);
         }
 
+    }
+
+
+    @Override
+    public List<Product> getProducts(String filter , String sort , int limit , int offset) {
+        return productRepository.getProducts(filter, sort , limit,offset);
     }
 }

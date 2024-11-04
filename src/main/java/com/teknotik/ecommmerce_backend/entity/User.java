@@ -44,18 +44,17 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-
         switch (roleId){
             case 1:
-                Role role1 = new Role(1 ,"ADMIN","ADMIN");
+                Role role1 = new Role(1 ,"admin","Yönetici");
                 roles.add(role1);
                 break;
             case 2:
-                Role role2 = new Role(2 ,"STORE","VENDOR");
+                Role role2 = new Role(2 ,"store","MAĞAZA");
                 roles.add(role2);
                 break;
             case 3:
-                Role role3 = new Role(3 ,"USER","CUSTOMER");
+                Role role3 = new Role(3 ,"customer","MÜŞTERİ");
                 roles.add(role3);
                 break;
         }
