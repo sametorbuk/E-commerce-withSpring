@@ -16,38 +16,10 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService{
 
     private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
-
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository , CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository ) {
         this.productRepository = productRepository;
-        this.categoryRepository=categoryRepository;
-    }
-
-    public void saveProducts(){
-        RestTemplate restTemplate =new RestTemplate();
-        String url="https://workintech-fe-ecommerce.onrender.com/products?page=%d&limit=300";
-
-        ProductResponse productResponse = restTemplate.getForObject(url, ProductResponse.class);
-        List<Product> products = productResponse.getProducts();
-
-        System.out.println("Gelen Ürünler: " + products);
-
-
-        for(Product pr : products){
-            Optional<Category> foundCat = categoryRepository.findById(pr.getCatnum());
-            String imgUrl = pr.getImages().get(0).getUrl();
-            pr.setImgUrl(imgUrl);
-            if(foundCat.isPresent()){
-                pr.setCategory(foundCat.get());
-            }
-        }
-
-
-        if (products != null) {
-            productRepository.saveAll(products);
-        }
 
     }
 
