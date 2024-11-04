@@ -1,9 +1,12 @@
 package com.teknotik.ecommmerce_backend;
 
 import com.teknotik.ecommmerce_backend.entity.Product;
+import com.teknotik.ecommmerce_backend.entity.User;
 import com.teknotik.ecommmerce_backend.repository.ProductRepository;
+import com.teknotik.ecommmerce_backend.service.CategoryServiceImpl;
 import com.teknotik.ecommmerce_backend.service.ProductService;
 import com.teknotik.ecommmerce_backend.service.ProductServiceImpl;
+import com.teknotik.ecommmerce_backend.service.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +19,12 @@ public class EcommmerceBackendApplication implements CommandLineRunner {
 	@Autowired
 	private ProductServiceImpl productService;
 
+	@Autowired
+	private CategoryServiceImpl categoryService;
+
+	@Autowired
+	private RoleServiceImpl roleService;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommmerceBackendApplication.class, args);
@@ -24,6 +33,9 @@ public class EcommmerceBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		productService.saveProducts();
+
 	}
+
+
+
 }

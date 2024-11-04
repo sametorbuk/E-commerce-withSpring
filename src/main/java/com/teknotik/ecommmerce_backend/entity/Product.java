@@ -1,11 +1,13 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,18 +35,33 @@ public class Product {
     private int stock;
 
     @Column(name = "store_id")
+    @JsonProperty("store_id")
     private int storeId;
+
 
     @Column(name = "rating")
     private double rating;
 
     @Column(name = "sell_count")
-    private long sellCount;
+    @JsonProperty("sell_count")
+    private int sellCount;
+
+
+    @Column(name = "cat_num")
+    @JsonProperty("category_id")
+    private Long catnum;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @ElementCollection
-    private List<Image> images;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    @Column(name = "image_url")
+    private String imgUrl;
+
+
 }
+

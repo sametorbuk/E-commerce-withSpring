@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "category" , schema = "ecommerce")
+@Table(name = "category", schema = "ecommerce")
 public class Category {
 
     @Id
@@ -33,9 +33,8 @@ public class Category {
     @Column(name = "gender")
     private String gender;
 
-    @OneToMany(mappedBy = "category",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<Product> products;
-
 
 }
 

@@ -27,4 +27,10 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     List<User> users;
+
+    public Role(long id, String code, String name) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
 }
