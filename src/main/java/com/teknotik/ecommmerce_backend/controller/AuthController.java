@@ -1,15 +1,19 @@
 package com.teknotik.ecommmerce_backend.controller;
 
 
+import com.teknotik.ecommmerce_backend.dto.LoginRequest;
 import com.teknotik.ecommmerce_backend.dto.RegisterResponse;
 import com.teknotik.ecommmerce_backend.dto.RegistrationStore;
 import com.teknotik.ecommmerce_backend.dto.RegistrationUser;
 import com.teknotik.ecommmerce_backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -45,6 +49,13 @@ public class AuthController {
                 registrationStore.password(), registrationStore.storeName(),
                 registrationStore.storePhone(), registrationStore.storeTaxId(), registrationStore.storeBankAccount());
         return new RegisterResponse(registrationStore.email(), "Registration happened successfully");
+    }
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String,String>> login(@RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
 

@@ -1,8 +1,11 @@
 package com.teknotik.ecommmerce_backend.config;
 
 
+import com.teknotik.ecommmerce_backend.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -18,6 +21,13 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
 
+    private final AuthenticationService authenticationService;
+
+
+    @Autowired
+    public AppConfig(@Lazy AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
 
     @Bean
@@ -25,14 +35,15 @@ public class AppConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(authenticationService);
         return new ProviderManager(authenticationProvider);
     }
+
+
 
 
     @Bean
