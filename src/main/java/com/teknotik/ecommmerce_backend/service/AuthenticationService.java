@@ -122,6 +122,8 @@ public class AuthenticationService implements UserDetailsService {
             if(authenticateUser(loginRequest.email(), loginRequest.password())){
                 String token = jwtService.generateToken(loginRequest.email());
                 Map<String ,String> loginResponse=new HashMap<>();
+                loginResponse.put("email",foundUser.get().getEmail());
+                loginResponse.put("name",foundUser.get().getName());
                 loginResponse.put("token" , token);
                 return loginResponse;
             }
@@ -130,6 +132,8 @@ public class AuthenticationService implements UserDetailsService {
                String token = jwtService.generateToken(loginRequest.email());
                Map<String ,String> loginResponse=new HashMap<>();
                loginResponse.put("token" , token);
+               loginResponse.put("email",foundStore.get().getEmail());
+               loginResponse.put("name",foundStore.get().getName());
                return loginResponse;
            }
         }
