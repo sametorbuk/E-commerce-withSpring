@@ -26,23 +26,23 @@ public class AuthenticationService {
 
 
     @Autowired
-    public AuthenticationService(PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserRepository userRepository , StoreRepository storeRepository) {
+    public AuthenticationService(PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserRepository userRepository, StoreRepository storeRepository) {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.storeRepository=storeRepository;
+        this.storeRepository = storeRepository;
     }
 
 
-    public User customerRegister(String name,String email , String password){
-        Optional<User> foundUser=userRepository.findByEmail(email);
-        if(foundUser.isPresent()){
-            throw new EcommerceException("This user already exist in system" , HttpStatus.BAD_REQUEST);
+    public User customerRegister(String name, String email, String password) {
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        if (foundUser.isPresent()) {
+            throw new EcommerceException("This user already exist in system", HttpStatus.BAD_REQUEST);
         }
 
-        String encodedPassword=passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(password);
 
-        Optional<Role> findRole=roleRepository.findByAuthority("customer");
+        Optional<Role> findRole = roleRepository.findByAuthority("customer");
 
         Set<Role> roles = new HashSet<>();
         roles.add(findRole.get());
@@ -59,16 +59,15 @@ public class AuthenticationService {
     }
 
 
-
-    public User adminRegister(String name,String email , String password){
-        Optional<User> foundUser=userRepository.findByEmail(email);
-        if(foundUser.isPresent()){
-            throw new EcommerceException("This user already exist in system" , HttpStatus.BAD_REQUEST);
+    public User adminRegister(String name, String email, String password) {
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        if (foundUser.isPresent()) {
+            throw new EcommerceException("This user already exist in system", HttpStatus.BAD_REQUEST);
         }
 
-        String encodedPassword=passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(password);
 
-        Optional<Role> findRole=roleRepository.findByAuthority("admin");
+        Optional<Role> findRole = roleRepository.findByAuthority("admin");
 
         Set<Role> roles = new HashSet<>();
         roles.add(findRole.get());
@@ -85,13 +84,13 @@ public class AuthenticationService {
     }
 
 
-    public Store storeRegister(String name, String email , String password,String storeName,String storePhone,String storeTaxId, String storeBankAccount){
-        Optional<Store> foundUser=storeRepository.findByEmail(email);
-        if(foundUser.isPresent()){
-            throw new EcommerceException("This store already exist in system" , HttpStatus.BAD_REQUEST);
+    public Store storeRegister(String name, String email, String password, String storeName, String storePhone, String storeTaxId, String storeBankAccount) {
+        Optional<Store> foundUser = storeRepository.findByEmail(email);
+        if (foundUser.isPresent()) {
+            throw new EcommerceException("This store already exist in system", HttpStatus.BAD_REQUEST);
         }
 
-        String encodedPassword=passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(password);
 
 
         Store newStore = new Store();
