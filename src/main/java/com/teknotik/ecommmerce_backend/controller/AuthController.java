@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public RegisterResponse register(@RequestBody RegistrationUser registrationUser) {
+        System.out.println("Received registration data: " + registrationUser);
         switch (registrationUser.roleId()) {
             case 1:
                 authenticationService.adminRegister(registrationUser.name(), registrationUser.email(), registrationUser.password());
@@ -44,8 +45,8 @@ public class AuthController {
             default:
                 throw new EcommerceException("Please enter a valid data", HttpStatus.BAD_REQUEST);
         }
-
     }
+
 
     @PostMapping("/storeRegister")
     public RegisterResponse storeRegister(@RequestBody RegistrationStore registrationStore){
