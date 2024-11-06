@@ -16,9 +16,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response,exception.getStatus());
     }
 
-    @ExceptionHandler
-    public ResponseEntity<EcommerceErrorResponse> exceptionHandler(Exception exception){
-        EcommerceErrorResponse response=new EcommerceErrorResponse(System.currentTimeMillis(), HttpStatus.BAD_REQUEST, exception.getMessage());
-        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-    }
+   // @ExceptionHandler
+   //  public ResponseEntity<EcommerceErrorResponse> exceptionHandler(Exception exception){
+    //      EcommerceErrorResponse response=new EcommerceErrorResponse(System.currentTimeMillis(), HttpStatus.BAD_REQUEST, exception.getMessage());
+    //       return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    //    }
 }
