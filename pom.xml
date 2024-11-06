@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.teknotik</groupId>
-	<artifactId>ecommmerce-backend</artifactId>
+	<artifactId>ecommerce-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ecommmerce-backend</name>
 	<description>Backend project for e commerce</description>
