@@ -41,8 +41,10 @@ public class AuthController {
             case 3:
                 authenticationService.customerRegister(registrationUser.name(), registrationUser.email(), registrationUser.password());
                 return new RegisterResponse(registrationUser.email(), "Registration happened successfully");
+            default:
+                throw new EcommerceException("Please enter a valid data", HttpStatus.BAD_REQUEST);
         }
-        throw new EcommerceException("Please enter a valid data", HttpStatus.BAD_REQUEST);
+
     }
 
     @PostMapping("/storeRegister")
