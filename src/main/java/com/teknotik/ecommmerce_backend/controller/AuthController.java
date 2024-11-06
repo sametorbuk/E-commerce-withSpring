@@ -5,8 +5,10 @@ import com.teknotik.ecommmerce_backend.dto.LoginRequest;
 import com.teknotik.ecommmerce_backend.dto.RegisterResponse;
 import com.teknotik.ecommmerce_backend.dto.RegistrationStore;
 import com.teknotik.ecommmerce_backend.dto.RegistrationUser;
+import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +42,7 @@ public class AuthController {
                 authenticationService.customerRegister(registrationUser.name(), registrationUser.email(), registrationUser.password());
                 return new RegisterResponse(registrationUser.email(), "Registration happened successfully");
         }
-        throw new RuntimeException();
+        throw new EcommerceException("Please enter a valid data", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/storeRegister")
