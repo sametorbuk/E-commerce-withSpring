@@ -1,0 +1,35 @@
+name: Build and Deploy to Fly.io
+
+on:
+  push:
+    branches:
+      - main  # Ana branch'e push yapılınca tetiklenecek
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # GitHub reposundan kodu al
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Maven ile projeyi derle
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adoptopenjdk'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      # Docker imajını oluştur
+      - name: Build Docker image
+        run: docker build -t ecommmerce-backend .
+
+      # Fly.io'ya deploy et
+      - name: Deploy to Fly.io
+        run: |
+          flyctl auth token ${{ secrets.FLY_API_TOKEN }}  # Fly.io API token'ını secret olarak ayarladığınızdan emin olun
+          flyctl deploy --image ecommmerce-backend --app e-commerce-backend-with-java-and-spring-boot
