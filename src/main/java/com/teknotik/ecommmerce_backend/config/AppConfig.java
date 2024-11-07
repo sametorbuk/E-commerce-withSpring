@@ -56,8 +56,10 @@ public class AppConfig {
         CorsConfiguration corsConfiguration=new CorsConfiguration();
 
         corsConfiguration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION,HttpHeaders.CONTENT_TYPE));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE));
+
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
