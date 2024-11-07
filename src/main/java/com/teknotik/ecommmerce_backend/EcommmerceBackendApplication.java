@@ -16,6 +16,9 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class EcommmerceBackendApplication implements CommandLineRunner {
 
+    @Autowired
+	private ProductServiceImpl productService;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommmerceBackendApplication.class, args);
