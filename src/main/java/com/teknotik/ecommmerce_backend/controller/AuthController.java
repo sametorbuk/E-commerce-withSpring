@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "https://e-commerce-project-teknotik.vercel.app/")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private AuthenticationService authenticationService;
