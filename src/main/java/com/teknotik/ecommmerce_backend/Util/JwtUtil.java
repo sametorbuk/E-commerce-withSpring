@@ -37,7 +37,7 @@ public class JwtUtil {
 
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);  // Claims::getSubject ile username alınır
+        return extractClaim(token, Claims::getSubject);
     }
 
 
