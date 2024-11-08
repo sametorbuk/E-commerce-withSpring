@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-
 public class AuthController {
 
     private AuthenticationService authenticationService;
