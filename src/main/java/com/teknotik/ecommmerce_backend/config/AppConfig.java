@@ -22,10 +22,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
 
 @Configuration
+@EnableWebMvc
 public class AppConfig {
 
     private final AuthenticationService authenticationService;
@@ -51,22 +53,6 @@ public class AppConfig {
     }
 
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration corsConfiguration=new CorsConfiguration();
-
-        corsConfiguration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE));
-
-        corsConfiguration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-         return source;
-    }
-
-
 
 
     @Bean
@@ -81,10 +67,6 @@ public class AppConfig {
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
-
-
-
-
 
 
 
