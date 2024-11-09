@@ -64,12 +64,14 @@ public class AppConfig {
     }
 
 
+    @Bean
     UrlBasedCorsConfigurationSource myWebsiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
