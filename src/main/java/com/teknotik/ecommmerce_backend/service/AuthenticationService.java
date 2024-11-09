@@ -1,6 +1,6 @@
 package com.teknotik.ecommmerce_backend.service;
 
-import com.teknotik.ecommmerce_backend.Util.JwtUtil;
+import com.teknotik.ecommmerce_backend.util.JwtUtil;
 import com.teknotik.ecommmerce_backend.dto.LoginRequest;
 import com.teknotik.ecommmerce_backend.entity.Role;
 import com.teknotik.ecommmerce_backend.entity.Store;
@@ -9,9 +9,7 @@ import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.repository.RoleRepository;
 import com.teknotik.ecommmerce_backend.repository.StoreRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +21,7 @@ import java.util.*;
 
 
 @Service
+// use ctrl + alt + l to reformat code
 public class AuthenticationService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -34,12 +33,12 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     public AuthenticationService(PasswordEncoder passwordEncoder, RoleRepository roleRepository,
-                                 UserRepository userRepository, StoreRepository storeRepository,JwtUtil jwtService) {
+                                 UserRepository userRepository, StoreRepository storeRepository, JwtUtil jwtService) {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
-        this.jwtService=jwtService;
+        this.jwtService = jwtService;
     }
 
 
@@ -115,46 +114,45 @@ public class AuthenticationService implements UserDetailsService {
 
     }
 
-    public Map<String,String> login(LoginRequest loginRequest){
-        Optional<User> foundUser =userRepository.findByEmail(loginRequest.email());
-        Optional<Store> foundStore=storeRepository.findByEmail(loginRequest.email());
-        if (foundUser.isPresent()){
-            if(authenticateUser(loginRequest.email(), loginRequest.password())){
+    public Map<String, String> login(LoginRequest loginRequest) {
+        Optional<User> foundUser = userRepository.findByEmail(loginRequest.email());
+        Optional<Store> foundStore = storeRepository.findByEmail(loginRequest.email());
+        if (foundUser.isPresent()) {
+            if (authenticateUser(loginRequest.email(), loginRequest.password())) {
                 String token = jwtService.generateToken(loginRequest.email());
-                Map<String ,String> loginResponse=new HashMap<>();
-                loginResponse.put("email",foundUser.get().getEmail());
-                loginResponse.put("name",foundUser.get().getName());
-                loginResponse.put("token" , token);
+                Map<String, String> loginResponse = new HashMap<>();
+                loginResponse.put("email", foundUser.get().getEmail());
+                loginResponse.put("name", foundUser.get().getName());
+                loginResponse.put("token", token);
                 return loginResponse;
             }
         } else if (foundStore.isPresent()) {
-           if(authenticateUser(loginRequest.email(), loginRequest.password())){
-               String token = jwtService.generateToken(loginRequest.email());
-               Map<String ,String> loginResponse=new HashMap<>();
-               loginResponse.put("token" , token);
-               loginResponse.put("email",foundStore.get().getEmail());
-               loginResponse.put("name",foundStore.get().getName());
-               return loginResponse;
-           }
-        }
-
-        throw new EcommerceException("There is no account with this email",HttpStatus.NOT_FOUND);
-    }
-
-
-
-    public boolean authenticateUser(String username , String password){
-        Optional<User> foundUser=userRepository.findByEmail(username);
-        if(foundUser.isPresent()){
-            String encodedPassword=foundUser.get().getPassword();
-            if(passwordEncoder.matches(password,encodedPassword)){
-               return true;
-            }else{
-                throw new EcommerceException("Invalid password please try again",HttpStatus.BAD_REQUEST);
+            if (authenticateUser(loginRequest.email(), loginRequest.password())) {
+                String token = jwtService.generateToken(loginRequest.email());
+                Map<String, String> loginResponse = new HashMap<>();
+                loginResponse.put("token", token);
+                loginResponse.put("email", foundStore.get().getEmail());
+                loginResponse.put("name", foundStore.get().getName());
+                return loginResponse;
             }
         }
 
-        throw new EcommerceException("There is no user with this email",HttpStatus.NOT_FOUND);
+        throw new EcommerceException("There is no account with this email", HttpStatus.NOT_FOUND);
+    }
+
+
+    public boolean authenticateUser(String username, String password) {
+        Optional<User> foundUser = userRepository.findByEmail(username);
+        if (foundUser.isPresent()) {
+            String encodedPassword = foundUser.get().getPassword();
+            if (passwordEncoder.matches(password, encodedPassword)) {
+                return true;
+            } else {
+                throw new EcommerceException("Invalid password please try again", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        throw new EcommerceException("There is no user with this email", HttpStatus.NOT_FOUND);
     }
 
     @Override

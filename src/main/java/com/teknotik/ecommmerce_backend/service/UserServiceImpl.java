@@ -1,6 +1,6 @@
 package com.teknotik.ecommmerce_backend.service;
 
-import com.teknotik.ecommmerce_backend.Util.JwtUtil;
+import com.teknotik.ecommmerce_backend.util.JwtUtil;
 import com.teknotik.ecommmerce_backend.dto.AddressResponse;
 import com.teknotik.ecommmerce_backend.dto.CardResponse;
 import com.teknotik.ecommmerce_backend.dto.DtoConverter;
@@ -11,14 +11,11 @@ import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.repository.AddressRepository;
 import com.teknotik.ecommmerce_backend.repository.CrediCardRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
