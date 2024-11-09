@@ -1,4 +1,4 @@
-package com.teknotik.ecommmerce_backend.Util;
+package com.teknotik.ecommmerce_backend.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;

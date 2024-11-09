@@ -8,17 +8,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-
-    @ExceptionHandler
-    public ResponseEntity<EcommerceErrorResponse> exceptionHandler(EcommerceException exception){
-        EcommerceErrorResponse response=new EcommerceErrorResponse(System.currentTimeMillis() , exception.getStatus(),exception.getMessage() );
-        return new ResponseEntity<>(response,exception.getStatus());
+    // it's a very good idea to have one global exception that you control.
+    // controlled exception - return 400+
+    @ExceptionHandler(EcommerceException.class)
+    public ResponseEntity<EcommerceErrorResponse> exceptionHandler(EcommerceException exception) {
+        EcommerceErrorResponse response = new EcommerceErrorResponse(System.currentTimeMillis(), exception.getStatus(), exception.getMessage());
+        return new ResponseEntity<>(response, exception.getStatus());
     }
 
-   // @ExceptionHandler
-   //  public ResponseEntity<EcommerceErrorResponse> exceptionHandler(Exception exception){
-    //      EcommerceErrorResponse response=new EcommerceErrorResponse(System.currentTimeMillis(), HttpStatus.BAD_REQUEST, exception.getMessage());
-    //       return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-    //    }
+    // controlled exception - return 500 +
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<EcommerceErrorResponse> exceptionHandler(Exception exception) {
+        // never return unknown messages to the world - it can contain sensitive data (exception.getMessage())
+        EcommerceErrorResponse response = new EcommerceErrorResponse(System.currentTimeMillis(), HttpStatus.BAD_REQUEST, exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // TODO: add third exception handler for 404 case
 }

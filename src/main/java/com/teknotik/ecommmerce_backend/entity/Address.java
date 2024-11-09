@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "address" , schema = "ecommerce")
+// never use @Data on entities - default @ToString can cause additional queries when you have relation with fetch = LAZY
 @Data
 public class Address {
 
