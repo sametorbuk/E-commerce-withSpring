@@ -21,12 +21,10 @@ public class AuthController {
     private AuthenticationService authenticationService;
 
 
-
     @Autowired
     public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
 
 
     @PostMapping("/register")
@@ -46,7 +44,7 @@ public class AuthController {
 
 
     @PostMapping("/storeRegister")
-    public RegisterResponse storeRegister(@RequestBody RegistrationStore registrationStore){
+    public RegisterResponse storeRegister(@RequestBody RegistrationStore registrationStore) {
         authenticationService.storeRegister(registrationStore.name(), registrationStore.email(),
                 registrationStore.password(), registrationStore.storeName(),
                 registrationStore.storePhone(), registrationStore.storeTaxId(), registrationStore.storeBankAccount());
@@ -54,13 +52,10 @@ public class AuthController {
     }
 
 
-
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
-
-
 
 
 }

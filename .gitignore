@@ -28,3 +28,4 @@ build/
 
 # Maven ve derleme dosyalarını gizle
 target/
+src/main/resources

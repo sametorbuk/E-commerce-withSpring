@@ -43,6 +43,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<CreditCard> cards;
 
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
+    Set<Order> orders;
+
+
 
     public User(String name, String email, String password, int roleId) {
         this.name = name;

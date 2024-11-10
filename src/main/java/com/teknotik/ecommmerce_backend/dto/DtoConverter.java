@@ -1,9 +1,6 @@
 package com.teknotik.ecommmerce_backend.dto;
 
-import com.teknotik.ecommmerce_backend.entity.Address;
-import com.teknotik.ecommmerce_backend.entity.CreditCard;
-import com.teknotik.ecommmerce_backend.entity.Product;
-import com.teknotik.ecommmerce_backend.entity.User;
+import com.teknotik.ecommmerce_backend.entity.*;
 
 public class DtoConverter {
 
@@ -18,6 +15,12 @@ public class DtoConverter {
 
     public static UserResponse userToUserResponse(User user){
         return new UserResponse(user.getName(), user.getEmail(), user.getId());
+    }
+
+
+    public static OrderResponse orderToOrderResponse(Order order){
+        return new OrderResponse(order.getAddressId(), order.getOrderDate(), order.getCardNo(),
+                order.getCardName(), order.getPrice(),order.getOrderProducts());
     }
 
 
