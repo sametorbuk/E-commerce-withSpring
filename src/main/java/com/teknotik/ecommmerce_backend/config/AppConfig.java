@@ -23,15 +23,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-// you can always add (debug = true) if you have issues with spring security
 @EnableWebSecurity(debug = true)
-// it could be a good idea to split into AppSecurityConfig && AppConfig
 public class AppConfig {
     private final AuthenticationService authenticationService;
 
-    // example usage of the properties in spring
-    // PS more modern way it to use yaml instead of properties
-    // you could override it by using ECOM_CORS_DOMAINS="http://example.com,http://example1.com" environment variable in prod
     @Value("${ecom.cors.domains:}")
     String[] corsDomains;
 
@@ -57,12 +52,8 @@ public class AppConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                // // https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html -
-                // we should use defaults as stated in the docs
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                // goto http://localhost:8080/teknotik/swagger-ui/index.html
-                // https://openapi-ts.dev/openapi-fetch/ to generate endpoints automatically in your Next.js app
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.OPTIONS).permitAll();
                     auth.requestMatchers("/auth/**").permitAll();
@@ -76,11 +67,10 @@ public class AppConfig {
                 .build();
     }
 
-    // https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
+
     @Bean
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app", "http://localhost:8000"));
         configuration.setAllowedOrigins(Arrays.stream(corsDomains).toList());
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE"

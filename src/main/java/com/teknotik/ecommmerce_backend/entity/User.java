@@ -65,12 +65,19 @@ public class User implements UserDetails {
     }
 
 
-    public void addCart(CreditCard creditCard){
+    public void addCard(CreditCard creditCard){
         if(cards == null){
             this.cards=new HashSet<>();
-            cards.add(creditCard);
         }
         cards.add(creditCard);
+    }
+
+
+    public void addAddress(Address address){
+        if (address == null){
+            this.addresses = new HashSet<>();
+        }
+        addresses.add(address);
     }
 
     @Override
