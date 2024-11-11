@@ -26,6 +26,8 @@ build/
 ### VS Code ###
 .vscode/
 
-# Maven ve derleme dosyalarını gizle
-/target
-src/main/resources
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
