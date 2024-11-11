@@ -27,5 +27,5 @@ build/
 .vscode/
 
 # Maven ve derleme dosyalarını gizle
-target/
+/target
 src/main/resources

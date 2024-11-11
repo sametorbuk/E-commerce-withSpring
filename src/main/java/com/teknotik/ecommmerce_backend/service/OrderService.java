@@ -12,10 +12,10 @@ public interface OrderService {
 
     OrderResponse findById(long id);
 
-    OrderResponse save(Order order);
+    OrderResponse save(String token,Order order);
 
-    OrderResponse delete(Order order);
+    OrderResponse delete(String token,Order order);
 
-    OrderResponse update(Order order);
+    OrderResponse update(String token,Order order);
 
 }

@@ -76,6 +76,13 @@ public class User implements UserDetails {
         cards.add(creditCard);
     }
 
+    public void addOrder(Order order){
+        if(orders == null){
+            this.orders=new HashSet<>();
+        }
+        orders.add(order);
+    }
+
 
     public void addAddress(Address address){
         if (address == null){
