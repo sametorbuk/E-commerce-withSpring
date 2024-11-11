@@ -1,10 +1,14 @@
-# Maven ile projenizi build edin
-FROM maven:3.8.8-openjdk-17 AS build
+# OpenJDK 17 kullanarak Maven'ı yükleyin
+FROM openjdk:17-jdk-alpine AS build
+
+# Maven'ı yükleyin
+RUN apk add --no-cache maven
+
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Derlenen jar dosyasını çalışma ortamına taşıyın
+# Derlenen jar dosyasını taşıyın
 FROM openjdk:17-jdk-alpine
 COPY --from=build /app/target/*.jar app.jar
 
