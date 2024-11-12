@@ -36,4 +36,11 @@ public class Address {
     private User user;
 
 
+    public Address(String city, String name, String phone, String surname, String title) {
+        this.city = city;
+        this.name = name;
+        this.phone = phone;
+        this.surname = surname;
+        this.title = title;
+    }
 }

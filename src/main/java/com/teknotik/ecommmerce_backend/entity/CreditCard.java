@@ -35,4 +35,12 @@ public class CreditCard {
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "user_id" , referencedColumnName = "id")
     private User user;
+
+
+    public CreditCard(String cardNo, String expireMonth, String expireYear, String nameOnCard) {
+        this.cardNo = cardNo;
+        this.expireMonth = expireMonth;
+        this.expireYear = expireYear;
+        this.nameOnCard = nameOnCard;
+    }
 }

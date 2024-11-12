@@ -14,10 +14,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/user/address")
 @RequiredArgsConstructor
-// prefer feature modules instead of global controller module
-// doing centralized controller folder destroy modularization
-// ideally you could remove the whole module from your app,
-// and nothing breaks (if it's not security or global config module)
 public class AddressController {
 
     private AddressServiceImpl addressService;
