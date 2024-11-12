@@ -71,8 +71,9 @@ public class AppConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
-                    auth.requestMatchers("/user/**").hasAuthority("ADMIN");
-                    auth.requestMatchers("/order/**").hasAnyAuthority("USER","ADMIN");
+                    auth.requestMatchers("/user/**").hasAnyAuthority("admin","customer");
+                    auth.requestMatchers("/user/**").hasAuthority("admin");
+                    auth.requestMatchers("/order/**").hasAnyAuthority("customer","admin");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
