@@ -7,9 +7,9 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cslh5s3qf0us738t56d0-a.oregon-postgres.render.com:5432/postgress_in7d
       - SPRING_DATASOURCE_USERNAME=postgress_in7d_user
-      - SPRING_DATASOURCE_PASSWORD=6mYqvYgJ8ZAgTZDvu4DvmdYavtzR41Ll
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_APPLICATION_NAME=ecommmerce-backend
-      - JWT_SECRET=MzYwNzg5YjM5YjE1YjViN2EzNzYwZTg4YTMzYzRjNTg3ZDZkYzM5Njk1NTFkZDBkMTY=
+      - JWT_SECRET=${JWT_SECRET}
     networks:
       - backend_network
 
