@@ -27,7 +27,7 @@ public class VerificationController {
         if(!jwtService.isTokenExpired(headers.authorization())){
             return ResponseEntity.ok(headers.authorization());
         }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Geçersiz token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 }
