@@ -25,7 +25,7 @@ public class VerificationController {
     @GetMapping
     public ResponseEntity verifyUser(@RequestBody Headers headers) {
         if(!jwtService.isTokenExpired(headers.authorization())){
-            return ResponseEntity.ok("Token doğrulandı ve geçerli!");
+            return ResponseEntity.ok(headers.authorization());
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Geçersiz token");
         }
