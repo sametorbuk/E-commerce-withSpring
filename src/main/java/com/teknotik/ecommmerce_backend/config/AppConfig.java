@@ -70,6 +70,7 @@ public class AppConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/verify/**").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
                     auth.requestMatchers("/user/**").hasAnyAuthority("admin","customer");
                     auth.requestMatchers("/order/**").hasAnyAuthority("customer","admin");
