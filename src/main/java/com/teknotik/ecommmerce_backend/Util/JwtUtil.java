@@ -1,17 +1,15 @@
 package com.teknotik.ecommmerce_backend.Util;
-
-import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -19,6 +17,11 @@ public class JwtUtil {
 
     @Value("${jwt.secret}")
     private String secretKey;
+
+
+
+
+
 
 
     public String generateToken(String username) {

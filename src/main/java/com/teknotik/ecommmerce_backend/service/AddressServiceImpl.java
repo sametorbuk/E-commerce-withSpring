@@ -10,8 +10,10 @@ import com.teknotik.ecommmerce_backend.repository.AddressRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -109,13 +111,21 @@ public class AddressServiceImpl {
     }
 
 
-    public void tokenIsValid(String token) {
+    public boolean tokenIsValid(String token) {
         if (jwtService.isTokenExpired(token)) {
             throw new EcommerceException("This token has expired", HttpStatus.BAD_REQUEST);
         }
         if (jwtService.extractUsername(token) == null) {
             throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
         }
+
+        return true;
+    }
+
+    public boolean hasAuthority(String token, String requiredAuthority) {
+        Collection<? extends GrantedAuthority> authorities = getAuthorities(token);
+        return authorities.stream()
+                .anyMatch(authority -> authority.getAuthority().equals(requiredAuthority));
     }
 
 }
