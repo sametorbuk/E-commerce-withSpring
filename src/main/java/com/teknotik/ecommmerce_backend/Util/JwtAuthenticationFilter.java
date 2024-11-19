@@ -1,44 +1,102 @@
 package com.teknotik.ecommmerce_backend.Util;
 
 import com.teknotik.ecommmerce_backend.Util.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Value("${jwt.secret}")
+    private String secretKey;
 
-    private final JwtUtil jwtUtil;
-
-    @Autowired
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, IOException {
-        String token = request.getHeader("Authorization");
-
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-            String username = jwtUtil.extractUsername(token);
-            List<GrantedAuthority> authorities = jwtUtil.extractAuthorities(token);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
 
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = extractToken(request);
+        System.out.println("Extracted Token: " + token);
+
+
+        if (token != null && validateToken(token)) {
+
+            Claims claims = getClaimsFromToken(token);
+            System.out.println("Claims: " + claims);
+
+
+            String username = claims.getSubject();
+            System.out.println("Username from token: " + username);
+
+            // Rol bilgilerini al
+            List<String> roles = (List<String>) claims.get("roles");
+            System.out.println("Roles from token: " + roles);
+
+
+            List<GrantedAuthority> authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+
+
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            System.out.println("Authentication set in SecurityContext: " + auth);
+        } else {
+            System.out.println("Token is invalid or missing");
         }
 
-        filterChain.doFilter(request, response);
+
+        chain.doFilter(request, response);
+    }
+
+
+    private String extractToken(HttpServletRequest request) {
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+
+
+    private boolean validateToken(String token) {
+
+        System.out.println("Validating token: " + token);
+        return true;
+    }
+
+    // Token'dan claims'i al
+    private Claims getClaimsFromToken(String token) {
+
+        System.out.println("Parsing claims from token: " + token);
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

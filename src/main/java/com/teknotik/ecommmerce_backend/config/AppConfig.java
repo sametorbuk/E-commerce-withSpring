@@ -1,5 +1,6 @@
 package com.teknotik.ecommmerce_backend.config;
 
+import com.teknotik.ecommmerce_backend.Util.JwtAuthenticationFilter;
 import com.teknotik.ecommmerce_backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -72,14 +74,21 @@ public class AppConfig {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/verify/**").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
-                    auth.requestMatchers("/user/**").hasAnyAuthority("admin","customer");
+                    auth.requestMatchers("/user/**").hasAuthority("admin");
+                    auth.requestMatchers("/user/**").hasAuthority("customer");
                     auth.requestMatchers("/order/**").hasAnyAuthority("customer","admin");
                     auth.anyRequest().authenticated();
                 })
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
+
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
