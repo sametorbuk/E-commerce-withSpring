@@ -120,7 +120,7 @@ public class AuthenticationService implements UserDetailsService {
         Optional<Store> foundStore=storeRepository.findByEmail(loginRequest.email());
         if (foundUser.isPresent()){
             if(authenticateUser(loginRequest.email(), loginRequest.password())){
-                String token = jwtService.generateToken(loginRequest.email());
+                String token = jwtService.generateToken(loginRequest.email() , foundUser.get().getRoles());
                 Map<String ,String> loginResponse=new HashMap<>();
                 loginResponse.put("email",foundUser.get().getEmail());
                 loginResponse.put("name",foundUser.get().getName());

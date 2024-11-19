@@ -1,4 +1,5 @@
 package com.teknotik.ecommmerce_backend.Util;
+import com.teknotik.ecommmerce_backend.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -19,15 +20,23 @@ public class JwtUtil {
     private String secretKey;
 
 
-
-
-
-
-
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
+
+    public String generateToken(String username, Set<Role> roles) {
+        List<String> authorities = roles.stream()
+                .map(Role::getAuthority)
+                .collect(Collectors.toList());
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", authorities);
+        return createToken(claims, username);
+    }
+
+
+
 
 
     private String createToken(Map<String, Object> claims, String username) {
@@ -58,8 +67,20 @@ public class JwtUtil {
                 .build();
 
         return parser.parseClaimsJws(token)
-                .getBody();  //
+                .getBody();
     }
+
+    public List<GrantedAuthority> extractAuthorities(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> authorities = (List<String>) claims.get("roles");
+
+
+        return authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+
 
 
     public boolean isTokenExpired(String token) {

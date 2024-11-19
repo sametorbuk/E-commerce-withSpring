@@ -34,7 +34,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public AddressResponse saveAddress(@RequestHeader("Authorization") String token, Address address) {
+    public AddressResponse saveAddress(@RequestHeader("Authorization") String token,@RequestBody Address address) {
         return addressService.saveAddress(token, address);
     }
 

@@ -54,6 +54,7 @@ public class AddressServiceImpl {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
         if (foundUser.isPresent()) {
+            jwtService.validateToken(token,foundUser.get().getEmail());
             User user = foundUser.get();
             user.addAddress(address);
             userRepository.save(user);
@@ -122,10 +123,6 @@ public class AddressServiceImpl {
         return true;
     }
 
-    public boolean hasAuthority(String token, String requiredAuthority) {
-        Collection<? extends GrantedAuthority> authorities = getAuthorities(token);
-        return authorities.stream()
-                .anyMatch(authority -> authority.getAuthority().equals(requiredAuthority));
-    }
+
 
 }
