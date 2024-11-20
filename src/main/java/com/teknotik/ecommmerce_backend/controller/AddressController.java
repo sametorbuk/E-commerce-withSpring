@@ -39,7 +39,7 @@ public class AddressController {
 
     @Secured({"ROLE_admin", "ROLE_customer"})
     @PostMapping
-    public AddressResponse saveAddress(@RequestHeader("Authorization") String token,@RequestBody Address address) {
+    public Address saveAddress(@RequestHeader("Authorization") String token,@RequestBody Address address) {
         return addressService.saveAddress(token, address);
     }
 

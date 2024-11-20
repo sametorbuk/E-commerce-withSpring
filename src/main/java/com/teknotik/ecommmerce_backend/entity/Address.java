@@ -19,6 +19,12 @@ public class Address {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "neighborhood")
+    private String neighborhood;
+
     @Column(name = "name")
     private String name;
 
@@ -36,9 +42,11 @@ public class Address {
     private User user;
 
 
-    public Address(String city, String name, String phone, String surname, String title) {
+    public Address(String city, String district, String name, String neighborhood, String phone, String surname, String title) {
         this.city = city;
+        this.district = district;
         this.name = name;
+        this.neighborhood = neighborhood;
         this.phone = phone;
         this.surname = surname;
         this.title = title;

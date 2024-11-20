@@ -6,7 +6,7 @@ public class DtoConverter {
 
 
     public static AddressResponse addressToAddressResponse(Address address){
-        return new AddressResponse(address.getTitle(), address.getName(), address.getSurname(), address.getPhone(), address.getCity());
+        return new AddressResponse(address.getTitle(), address.getName(), address.getSurname(), address.getPhone(), address.getCity(), address.getNeighborhood(), address.getDistrict());
     }
 
     public static CardResponse cardToCardResponse(CreditCard creditCard){

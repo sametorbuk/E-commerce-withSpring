@@ -62,6 +62,11 @@ public class JwtUtil {
 
 
     private Claims extractAllClaims(String token) {
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         JwtParser parser = Jwts.parser()
                 .setSigningKey(secretKey)
                 .build();
@@ -72,10 +77,14 @@ public class JwtUtil {
 
     public List<GrantedAuthority> extractAuthorities(String token) {
         Claims claims = extractAllClaims(token);
-        List<String> authorities = (List<String>) claims.get("roles");
+        List<String> authorities = claims.get("roles", List.class);
 
+        if (authorities == null) {
+            return Collections.emptyList();
+        }
 
         return authorities.stream()
+                .map(role -> "ROLE_" + role)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

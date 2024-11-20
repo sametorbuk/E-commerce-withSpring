@@ -42,7 +42,7 @@ public class AddressServiceImpl {
             Set<Address> addresses = foundUser.get().getAddresses();
             Set<AddressResponse> response = new HashSet<>();
             for (Address add : addresses) {
-                response.add(new AddressResponse(add.getTitle(), add.getName(), add.getSurname(), add.getPhone(), add.getCity()));
+                response.add(new AddressResponse(add.getTitle(), add.getName(), add.getSurname(), add.getPhone(), add.getCity() , add.getNeighborhood(),add.getDistrict()));
             }
             return response;
         }
@@ -50,16 +50,17 @@ public class AddressServiceImpl {
     }
 
 
-    public AddressResponse saveAddress(String token, Address address) {
+    public Address saveAddress(String token, Address address) {
         tokenIsValid(token);
+
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
         if (foundUser.isPresent()) {
-            jwtService.validateToken(token,foundUser.get().getEmail());
+            jwtService.validateToken(token, foundUser.get().getEmail());
             User user = foundUser.get();
             user.addAddress(address);
+            address.setUser(user);
             userRepository.save(user);
-            addressRepository.save(address);
-            return DtoConverter.addressToAddressResponse(address);
+            return address;
         } else {
             throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
         }
