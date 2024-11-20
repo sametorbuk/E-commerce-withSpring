@@ -7,11 +7,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -50,17 +50,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = claims.getSubject();
             System.out.println("Username from token: " + username);
 
-            // Rol bilgilerini al
+
             List<String> roles = (List<String>) claims.get("roles");
             System.out.println("Roles from token: " + roles);
 
 
             List<GrantedAuthority> authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(Collectors.toList());
 
 
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            Authentication auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
 
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -77,7 +77,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
+            return header.substring(7).trim();
         }
         return null;
     }
@@ -89,10 +89,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return true;
     }
 
-    // Token'dan claims'i al
+
     private Claims getClaimsFromToken(String token) {
 
         System.out.println("Parsing claims from token: " + token);
+        token = token.trim();
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()

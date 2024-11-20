@@ -74,8 +74,7 @@ public class AppConfig {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/verify/**").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
-                    auth.requestMatchers("/user/**").hasAuthority("admin");
-                    auth.requestMatchers("/user/**").hasAuthority("customer");
+                    auth.requestMatchers("/user/**").hasAnyRole("admin","customer");
                     auth.requestMatchers("/order/**").hasAnyAuthority("customer","admin");
                     auth.anyRequest().authenticated();
                 })
