@@ -42,7 +42,7 @@ public class AddressServiceImpl {
             Set<Address> addresses = foundUser.get().getAddresses();
             Set<AddressResponse> response = new HashSet<>();
             for (Address add : addresses) {
-                response.add(new AddressResponse(add.getTitle(), add.getName(), add.getSurname(), add.getPhone(), add.getCity() , add.getNeighborhood(),add.getDistrict()));
+                response.add(new AddressResponse(add.getId(),add.getTitle(), add.getName(), add.getSurname(), add.getPhone(), add.getCity() , add.getNeighborhood(),add.getDistrict()));
             }
             return response;
         }
@@ -92,8 +92,12 @@ public class AddressServiceImpl {
     public AddressResponse updateAddress(String token, Address address) {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
+
         if (foundUser.isPresent()) {
-            Optional<Address> foundAddress = foundUser.get().getAddresses().stream().filter(addr -> addr.getId() == address.getId()).findFirst();
+            Optional<Address> foundAddress = foundUser.get().getAddresses().stream()
+                    .filter(addr -> addr.getId() == address.getId())
+                    .findFirst();
+
             if (foundAddress.isPresent()) {
                 Address existAddress = foundAddress.get();
                 existAddress.setCity(address.getCity());
@@ -101,9 +105,14 @@ public class AddressServiceImpl {
                 existAddress.setTitle(address.getTitle());
                 existAddress.setPhone(address.getPhone());
                 existAddress.setSurname(address.getSurname());
-                userRepository.save(foundUser.get());
-                addressRepository.save(address);
-                return DtoConverter.addressToAddressResponse(address);
+
+
+                existAddress.setUser(foundUser.get());
+
+
+                addressRepository.save(existAddress);
+
+                return DtoConverter.addressToAddressResponse(existAddress);
             } else {
                 throw new EcommerceException("There is no address with this id", HttpStatus.NOT_FOUND);
             }
@@ -111,6 +120,7 @@ public class AddressServiceImpl {
             throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
         }
     }
+
 
 
     public boolean tokenIsValid(String token) {
