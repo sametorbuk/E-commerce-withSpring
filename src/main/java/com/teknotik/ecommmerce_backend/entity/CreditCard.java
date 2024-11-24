@@ -37,10 +37,11 @@ public class CreditCard {
     private User user;
 
 
-    public CreditCard(String cardNo, String expireMonth, String expireYear, String nameOnCard) {
+    public CreditCard(String expireMonth , String expireYear,String cardNo, String nameOnCard) {
         this.cardNo = cardNo;
         this.expireMonth = expireMonth;
         this.expireYear = expireYear;
         this.nameOnCard = nameOnCard;
+
     }
 }

@@ -67,7 +67,8 @@ public class AddressServiceImpl {
     }
 
 
-    public AddressResponse deleteAddress(String token, long id) {
+    public AddressResponse
+    deleteAddress(String token, long id) {
         if (id <= 0) {
             throw new EcommerceException("Please enter a valid id", HttpStatus.BAD_REQUEST);
         }
@@ -108,6 +109,7 @@ public class AddressServiceImpl {
 
 
                 existAddress.setUser(foundUser.get());
+
 
 
                 addressRepository.save(existAddress);

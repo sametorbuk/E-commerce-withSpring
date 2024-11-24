@@ -10,7 +10,7 @@ public class DtoConverter {
     }
 
     public static CardResponse cardToCardResponse(CreditCard creditCard){
-        return new CardResponse(creditCard.getExpireMonth(), creditCard.getExpireYear(), creditCard.getCardNo(), creditCard.getNameOnCard());
+        return new CardResponse(creditCard.getId(), creditCard.getExpireMonth(), creditCard.getExpireYear(), creditCard.getCardNo(), creditCard.getNameOnCard());
     }
 
     public static UserResponse userToUserResponse(User user){

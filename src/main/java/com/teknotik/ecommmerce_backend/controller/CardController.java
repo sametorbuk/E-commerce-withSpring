@@ -27,6 +27,7 @@ public class CardController {
 
     @PostMapping
     public CardResponse saveCard(@RequestHeader("Authorization") String token, @RequestBody CreditCard creditCard) {
+        System.out.println("Received CreditCard: " + creditCard);
         return cardService.saveCard(token, creditCard);
     }
 

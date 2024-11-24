@@ -52,14 +52,16 @@ public class CardServiceImpl {
         CardResponse response = DtoConverter.cardToCardResponse(creditCard);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
         if(foundUser.isPresent()){
-            foundUser.get().addCard(creditCard);
-            userRepository.save(foundUser.get());
-            cardRepository.save(creditCard);
-            return DtoConverter.cardToCardResponse(creditCard);
+            User user = foundUser.get();
+            user.addCard(creditCard);
+            creditCard.setUser(user);
+            userRepository.save(user);
+            return response;
         }else{
             throw new EcommerceException("There is no user with this email",HttpStatus.NOT_FOUND);
         }
     }
+
 
 
     public CardResponse deleteCard(String token , long cardId){
@@ -72,7 +74,6 @@ public class CardServiceImpl {
             Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
             if (foundUser.isPresent()){
                 foundUser.get().getCards().remove(foundCard.get());
-                userRepository.save(foundUser.get());
                 cardRepository.delete(foundCard.get());
                 return DtoConverter.cardToCardResponse(foundCard.get());
             }else{
