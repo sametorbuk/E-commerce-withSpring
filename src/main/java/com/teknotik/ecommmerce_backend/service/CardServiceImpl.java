@@ -31,91 +31,91 @@ public class CardServiceImpl {
         this.userRepository = userRepository;
     }
 
-    public Set<CardResponse> findAllCard(String token){
+    public Set<CardResponse> findAllCard(String token) {
         tokenIsValid(token);
-        Optional<User> foundUser=userRepository.findByEmail(jwtService.extractUsername(token));
-        if(foundUser.isPresent()){
-            Set<CardResponse> allCard=new HashSet<>();
-            for(CreditCard card : foundUser.get().getCards()){
-                CardResponse cardResponse= DtoConverter.cardToCardResponse(card);
+        Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
+        if (foundUser.isPresent()) {
+            Set<CardResponse> allCard = new HashSet<>();
+            for (CreditCard card : foundUser.get().getCards()) {
+                CardResponse cardResponse = DtoConverter.cardToCardResponse(card);
                 allCard.add(cardResponse);
             }
             return allCard;
-        }else{
-            throw new EcommerceException("There is no user with this email" , HttpStatus.NOT_FOUND);
+        } else {
+            throw new EcommerceException("There is no user with this email", HttpStatus.NOT_FOUND);
         }
     }
 
 
-    public CardResponse saveCard(String token,CreditCard creditCard){
+    public CardResponse saveCard(String token, CreditCard creditCard) {
         tokenIsValid(token);
-        CardResponse response = DtoConverter.cardToCardResponse(creditCard);
+
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-        if(foundUser.isPresent()){
+        if (foundUser.isPresent()) {
             User user = foundUser.get();
             user.addCard(creditCard);
             creditCard.setUser(user);
-            userRepository.save(user);
-            return response;
-        }else{
-            throw new EcommerceException("There is no user with this email",HttpStatus.NOT_FOUND);
+
+            return DtoConverter.cardToCardResponse(cardRepository.save(creditCard));
+        } else {
+            throw new EcommerceException("There is no user with this email", HttpStatus.NOT_FOUND);
         }
     }
 
 
-
-    public CardResponse deleteCard(String token , long cardId){
+    public CardResponse deleteCard(String token, long cardId) {
         tokenIsValid(token);
-        if(cardId <= 0){
-            throw new EcommerceException("Please enter a valid card_id",HttpStatus.BAD_REQUEST);
+        if (cardId <= 0) {
+            throw new EcommerceException("Please enter a valid card_id", HttpStatus.BAD_REQUEST);
         }
         Optional<CreditCard> foundCard = cardRepository.findById(cardId);
-        if(foundCard.isPresent()){
+        if (foundCard.isPresent()) {
             Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-            if (foundUser.isPresent()){
+            if (foundUser.isPresent()) {
                 foundUser.get().getCards().remove(foundCard.get());
                 cardRepository.delete(foundCard.get());
                 return DtoConverter.cardToCardResponse(foundCard.get());
-            }else{
-                throw new EcommerceException("There is no user with this email",HttpStatus.NOT_FOUND);
+            } else {
+                throw new EcommerceException("There is no user with this email", HttpStatus.NOT_FOUND);
             }
 
-        }else {
-            throw new EcommerceException("There is no card with this id",HttpStatus.NOT_FOUND);
+        } else {
+            throw new EcommerceException("There is no card with this id", HttpStatus.NOT_FOUND);
         }
     }
 
 
-    public CardResponse updateCard(String token , CreditCard creditCard){
+    public CardResponse updateCard(String token, CreditCard creditCard) {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-        if (foundUser.isPresent()){
+        if (foundUser.isPresent()) {
             Optional<CreditCard> existCardFound = foundUser.get().getCards().stream().filter(card -> card.getId() == creditCard.getId()).findFirst();
-            if(existCardFound.isPresent()){
+            if (existCardFound.isPresent()) {
                 CreditCard existCard = existCardFound.get();
                 existCard.setCardNo(creditCard.getCardNo());
                 existCard.setNameOnCard(creditCard.getNameOnCard());
                 existCard.setCvv(creditCard.getCvv());
                 existCard.setExpireMonth(creditCard.getExpireMonth());
                 existCard.setExpireYear(creditCard.getExpireYear());
+                existCard.setUser(foundUser.get());
                 userRepository.save(foundUser.get());
-                cardRepository.save(creditCard);
+
                 return DtoConverter.cardToCardResponse(creditCard);
-            }else{
-                throw new EcommerceException("There is no card like this card",HttpStatus.NOT_FOUND);
+            } else {
+                throw new EcommerceException("There is no card like this card", HttpStatus.NOT_FOUND);
             }
-        }else {
-            throw new EcommerceException("There is no user",HttpStatus.NOT_FOUND);
+        } else {
+            throw new EcommerceException("There is no user", HttpStatus.NOT_FOUND);
         }
     }
 
 
-    public void tokenIsValid(String token){
-        if(jwtService.isTokenExpired(token)){
-            throw new EcommerceException("This token has expired",HttpStatus.BAD_REQUEST);
+    public void tokenIsValid(String token) {
+        if (jwtService.isTokenExpired(token)) {
+            throw new EcommerceException("This token has expired", HttpStatus.BAD_REQUEST);
         }
-        if(jwtService.extractUsername(token) == null){
-            throw new EcommerceException("There is no user with this token",HttpStatus.NOT_FOUND);
+        if (jwtService.extractUsername(token) == null) {
+            throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
         }
     }
 

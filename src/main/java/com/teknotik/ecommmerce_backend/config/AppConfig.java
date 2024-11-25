@@ -58,8 +58,8 @@ public class AppConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app","http://localhost:5173"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTIONS"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("https://e-commerce-project-teknotik.vercel.app", "http://localhost:5173"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
@@ -74,8 +74,8 @@ public class AppConfig {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/verify/**").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
-                    auth.requestMatchers("/user/**").hasAnyRole("admin","customer");
-                    auth.requestMatchers("/order/**").hasAnyRole("customer","admin");
+                    auth.requestMatchers("/user/**").hasAnyRole("admin", "customer");
+                    auth.requestMatchers("/order/**").hasAnyRole("customer", "admin");
                     auth.anyRequest().authenticated();
                 })
 

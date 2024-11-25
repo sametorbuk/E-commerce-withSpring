@@ -1,4 +1,5 @@
 package com.teknotik.ecommmerce_backend.Util;
+
 import com.teknotik.ecommmerce_backend.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -34,9 +35,6 @@ public class JwtUtil {
         claims.put("roles", authorities);
         return createToken(claims, username);
     }
-
-
-
 
 
     private String createToken(Map<String, Object> claims, String username) {
@@ -90,8 +88,6 @@ public class JwtUtil {
     }
 
 
-
-
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -107,12 +103,9 @@ public class JwtUtil {
     }
 
 
-
     public boolean validateToken(String token) {
         return !isTokenExpired(token);
     }
-
-
 
 
 }
