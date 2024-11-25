@@ -1,5 +1,7 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "authority")
     @JsonProperty(namespace = "code")
     private String authority;
+
 
 
     @ManyToMany(mappedBy = "roles")

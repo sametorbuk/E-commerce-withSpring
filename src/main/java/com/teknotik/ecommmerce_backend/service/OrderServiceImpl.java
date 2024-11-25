@@ -39,69 +39,68 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse findById(long id) {
-        Optional<Order> foundOrder=orderRepository.findById(id);
-        if(foundOrder.isPresent()){
+        Optional<Order> foundOrder = orderRepository.findById(id);
+        if (foundOrder.isPresent()) {
             return DtoConverter.orderToOrderResponse(foundOrder.get());
-        }else{
+        } else {
             throw new EcommerceException("There is no order with this id", HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public OrderResponse save(String token,Order order) {
-       tokenIsValid(token);
-       Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-       if(foundUser.isPresent()){
-           User user = foundUser.get();
-           user.addOrder(order);
-           order.setUser(user);
-           return DtoConverter.orderToOrderResponse(orderRepository.save(order));
-
-       }else{
-           throw new EcommerceException("There is no user with this token",HttpStatus.NOT_FOUND);
-       }
-
-    }
-
-    @Override
-    public OrderResponse delete(String token,Order order) {
+    public OrderResponse save(String token, Order order) {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-        if(foundUser.isPresent()){
+        if (foundUser.isPresent()) {
             User user = foundUser.get();
-            user.getOrders().remove(order);
-            orderRepository.delete(order);
-            userRepository.save(user);
-            return DtoConverter.orderToOrderResponse(order);
-        }else{
-            throw new EcommerceException("There is no user with this id",HttpStatus.NOT_FOUND);
+            user.addOrder(order);
+            order.setUser(user);
+            return DtoConverter.orderToOrderResponse(orderRepository.save(order));
+
+        } else {
+            throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
         }
 
     }
 
     @Override
-    public OrderResponse update(String token,Order order) {
-     tokenIsValid(token);
-     Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
-     if(foundUser.isPresent()){
-         User user =foundUser.get();
-         Optional<Order> existOrder=user.getOrders().stream().filter(ord -> ord.getId() == order.getId()).findFirst();
-        existOrder.get().setOrderProducts(order.getOrderProducts());
-        existOrder.get().setOrderDate(order.getOrderDate());
-        existOrder.get().setCvv(order.getCvv());
-        existOrder.get().setPrice(order.getPrice());
-        existOrder.get().setCardExpireMonth(order.getCardExpireMonth());
-        existOrder.get().setCardExpireYear(order.getCardExpireYear());
-        existOrder.get().setAddressId(order.getAddressId());
-        existOrder.get().setCardNo(order.getCardNo());
-        existOrder.get().setCardName(order.getCardName());
-        userRepository.save(user);
-        return DtoConverter.orderToOrderResponse(order);
-     }else{
-         throw new EcommerceException("There is no user with this token",HttpStatus.NOT_FOUND);
-     }
+    public OrderResponse delete(String token, Order order) {
+        tokenIsValid(token);
+        Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
+        if (foundUser.isPresent()) {
+            User user = foundUser.get();
+            user.getOrders().remove(order);
+            orderRepository.delete(order);
+            userRepository.save(user);
+            return DtoConverter.orderToOrderResponse(order);
+        } else {
+            throw new EcommerceException("There is no user with this id", HttpStatus.NOT_FOUND);
+        }
+
     }
 
+    @Override
+    public OrderResponse update(String token, Order order) {
+        tokenIsValid(token);
+        Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));
+        if (foundUser.isPresent()) {
+            User user = foundUser.get();
+            Optional<Order> existOrder = user.getOrders().stream().filter(ord -> ord.getId() == order.getId()).findFirst();
+            existOrder.get().setOrderProducts(order.getOrderProducts());
+            existOrder.get().setOrderDate(order.getOrderDate());
+            existOrder.get().setCvv(order.getCvv());
+            existOrder.get().setPrice(order.getPrice());
+            existOrder.get().setCardExpireMonth(order.getCardExpireMonth());
+            existOrder.get().setCardExpireYear(order.getCardExpireYear());
+            existOrder.get().setAddressId(order.getAddressId());
+            existOrder.get().setCardNo(order.getCardNo());
+            existOrder.get().setCardName(order.getCardName());
+            userRepository.save(user);
+            return DtoConverter.orderToOrderResponse(order);
+        } else {
+            throw new EcommerceException("There is no user with this token", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     public void tokenIsValid(String token) {

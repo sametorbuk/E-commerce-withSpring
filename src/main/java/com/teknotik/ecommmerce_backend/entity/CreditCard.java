@@ -1,6 +1,7 @@
 package com.teknotik.ecommmerce_backend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,12 +44,12 @@ public class CreditCard {
     private User user;
 
 
-    public CreditCard(String expireMonth, String expireYear, String cardNo, String nameOnCard,String cvv) {
+    public CreditCard(String expireMonth, String expireYear, String cardNo, String nameOnCard, String cvv) {
         this.cardNo = cardNo;
         this.expireMonth = expireMonth;
         this.expireYear = expireYear;
         this.nameOnCard = nameOnCard;
-        this.cvv=cvv;
+        this.cvv = cvv;
 
     }
 }

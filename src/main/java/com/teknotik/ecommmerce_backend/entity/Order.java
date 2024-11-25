@@ -1,5 +1,7 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -46,19 +48,32 @@ public class Order {
     private String cardExpireYear;
 
     @Column(name = "cvv")
+    @JsonProperty("card_ccv")
     private String cvv;
 
     @Column(name = "price")
     private double price;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , referencedColumnName = "id")
     private User user;
 
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    @JsonProperty("products")
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH} )
     @JoinTable(name = "order_order_product" , joinColumns =@JoinColumn(name="order_id") , inverseJoinColumns = @JoinColumn(name = "order_product_id"))
     List<OrderProduct> orderProducts;
 
 
+    public Order(long addressId, String cardExpireMonth, String cardExpireYear, String cardName, String cardNo, String cvv, String orderDate, double price) {
+        this.addressId = addressId;
+        this.cardExpireMonth = cardExpireMonth;
+        this.cardExpireYear = cardExpireYear;
+        this.cardName = cardName;
+        this.cardNo = cardNo;
+        this.cvv = cvv;
+        this.orderDate = orderDate;
+        this.price = price;
+    }
 }

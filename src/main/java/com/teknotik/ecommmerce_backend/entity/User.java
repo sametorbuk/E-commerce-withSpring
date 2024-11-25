@@ -1,5 +1,6 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +31,7 @@ public class User implements UserDetails {
     private String password;
 
 
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", schema = "ecommerce", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -41,9 +43,8 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<CreditCard> cards;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<Order> orders;
-
 
 
     public User(String name, String email, String password, int roleId) {
@@ -67,27 +68,28 @@ public class User implements UserDetails {
     }
 
 
-    public void addCard(CreditCard creditCard){
-        if(cards == null){
-            this.cards=new HashSet<>();
+    public void addCard(CreditCard creditCard) {
+        if (cards == null) {
+            this.cards = new HashSet<>();
         }
         cards.add(creditCard);
     }
 
-    public void addOrder(Order order){
-        if(orders == null){
-            this.orders=new HashSet<>();
+    public void addOrder(Order order) {
+        if (orders == null) {
+            this.orders = new HashSet<>();
         }
         orders.add(order);
     }
 
 
-    public void addAddress(Address address){
-        if (address == null){
+    public void addAddress(Address address) {
+        if (address == null) {
             this.addresses = new HashSet<>();
         }
         addresses.add(address);
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

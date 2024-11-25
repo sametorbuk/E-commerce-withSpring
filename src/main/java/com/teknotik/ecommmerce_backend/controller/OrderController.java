@@ -6,6 +6,8 @@ import com.teknotik.ecommmerce_backend.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -17,6 +19,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+
+
+    @GetMapping
+    public List<Order> findAll(@RequestHeader("Authorization")String token){
+         return orderService.findAll();
+    }
 
     @PostMapping
     public OrderResponse saveOrder(@RequestHeader("Authorization") String token , @RequestBody Order order){
