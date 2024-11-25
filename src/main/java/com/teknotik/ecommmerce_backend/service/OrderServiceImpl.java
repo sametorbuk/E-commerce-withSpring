@@ -54,9 +54,8 @@ public class OrderServiceImpl implements OrderService {
        if(foundUser.isPresent()){
            User user = foundUser.get();
            user.addOrder(order);
-           userRepository.save(user);
-           orderRepository.save(order);
-           return DtoConverter.orderToOrderResponse(order);
+           order.setUser(user);
+           return DtoConverter.orderToOrderResponse(orderRepository.save(order));
 
        }else{
            throw new EcommerceException("There is no user with this token",HttpStatus.NOT_FOUND);

@@ -1,5 +1,6 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,21 +22,27 @@ public class Order {
     private long id;
 
     @Column(name = "address_id")
+    @JsonProperty("address_id")
     private long addressId;
 
     @Column(name = "order_date")
+    @JsonProperty("order_date")
     private String orderDate;
 
     @Column(name = "card_no")
+    @JsonProperty("card_no")
     private String cardNo;
 
     @Column(name = "card_name")
+    @JsonProperty("card_name")
     private String cardName;
 
     @Column(name = "card_expire_month")
+    @JsonProperty("card_expire_month")
     private String cardExpireMonth;
 
     @Column(name = "card_expire_year")
+    @JsonProperty("card_expire_year")
     private String cardExpireYear;
 
     @Column(name = "cvv")

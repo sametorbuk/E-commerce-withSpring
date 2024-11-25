@@ -1,5 +1,6 @@
 package com.teknotik.ecommmerce_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,10 @@ public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "product_id")
+    @JsonProperty("product_id")
+    private long productId;
 
     @Column(name = "count")
     private int count;
