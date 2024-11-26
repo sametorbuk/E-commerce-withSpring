@@ -40,4 +40,9 @@ public class CategoryServiceImpl {
             categoryRepository.saveAll(categories);
         }
     }
+
+
+    public List<Category> findAll(){
+        return categoryRepository.findAll();
+    }
 }

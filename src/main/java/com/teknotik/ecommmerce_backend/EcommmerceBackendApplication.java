@@ -1,5 +1,6 @@
 package com.teknotik.ecommmerce_backend;
 
+import com.teknotik.ecommmerce_backend.service.CategoryServiceImpl;
 import com.teknotik.ecommmerce_backend.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EcommmerceBackendApplication implements CommandLineRunner {
 
     @Autowired
-	private ProductServiceImpl productService;
+	private CategoryServiceImpl categoryService;
 
 
 	public static void main(String[] args) {
