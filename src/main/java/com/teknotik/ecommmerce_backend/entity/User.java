@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL , mappedBy = "user")
-    private String refreshToken;
+    private RefreshToken refreshToken;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
