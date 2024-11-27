@@ -3,9 +3,11 @@ package com.teknotik.ecommmerce_backend.service;
 import com.teknotik.ecommmerce_backend.data.ProductResponse;
 import com.teknotik.ecommmerce_backend.entity.Category;
 import com.teknotik.ecommmerce_backend.entity.Product;
+import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.repository.CategoryRepository;
 import com.teknotik.ecommmerce_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,6 +42,8 @@ public class ProductServiceImpl implements ProductService{
             }
         }
     }
+
+
 
 
     @Override

@@ -30,6 +30,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(cascade = CascadeType.ALL , mappedBy = "user")
+    private String refreshToken;
 
 
     @ManyToMany(cascade = CascadeType.ALL)

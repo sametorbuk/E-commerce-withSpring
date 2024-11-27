@@ -12,10 +12,13 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query(value = "SELECT * FROM products " +
             "WHERE description ILIKE CONCAT('%', :filter, '%') " +
-            "ORDER BY price :sort " +
+            "ORDER BY price " +
+            ":sort " +
             "LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<Product> getProducts(@Param("filter") String filter,
                               @Param("sort") String sort,
                               @Param("limit") int limit,
                               @Param("offset") int offset);
+
+
 }
