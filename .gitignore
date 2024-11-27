@@ -13,6 +13,8 @@
 *.iml
 *.ipr
 
+
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,4 +33,3 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-/src/main/resources/application.properties
