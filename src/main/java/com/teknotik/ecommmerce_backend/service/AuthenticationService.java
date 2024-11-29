@@ -30,18 +30,19 @@ public class AuthenticationService implements UserDetailsService {
     private RoleRepository roleRepository;
     private StoreRepository storeRepository;
     private JwtUtil jwtService;
+    private RefreshTokenService refreshTokenService;
 
 
     @Autowired
-    public AuthenticationService(PasswordEncoder passwordEncoder, RoleRepository roleRepository,
-                                 UserRepository userRepository, StoreRepository storeRepository,JwtUtil jwtService) {
+    public AuthenticationService(JwtUtil jwtService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, RoleRepository
+            roleRepository, StoreRepository storeRepository, UserRepository userRepository) {
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
         this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
         this.storeRepository = storeRepository;
-        this.jwtService=jwtService;
+        this.userRepository = userRepository;
     }
-
 
     public User customerRegister(String name, String email, String password) {
         Optional<User> foundUser = userRepository.findByEmail(email);
@@ -121,10 +122,12 @@ public class AuthenticationService implements UserDetailsService {
         if (foundUser.isPresent()){
             if(authenticateUser(loginRequest.email(), loginRequest.password())){
                 String token = jwtService.generateToken(loginRequest.email() , foundUser.get().getRoles());
+                String refreshToken = refreshTokenService.createRefreshToken(foundUser.get()).getToken();
                 Map<String ,String> loginResponse=new HashMap<>();
                 loginResponse.put("email",foundUser.get().getEmail());
                 loginResponse.put("name",foundUser.get().getName());
                 loginResponse.put("token" , token);
+                loginResponse.put("refreshToken" , refreshToken);
                 return loginResponse;
             }
         } else if (foundStore.isPresent()) {
