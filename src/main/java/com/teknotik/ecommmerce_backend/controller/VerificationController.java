@@ -3,6 +3,7 @@ package com.teknotik.ecommmerce_backend.controller;
 
 import com.teknotik.ecommmerce_backend.Util.JwtUtil;
 import com.teknotik.ecommmerce_backend.dto.Headers;
+import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,11 @@ public class VerificationController {
     }
 
     @GetMapping
-    public ResponseEntity verifyUser(@RequestBody Headers headers) {
-        if(!jwtService.isTokenExpired(headers.authorization())){
-            return ResponseEntity.ok(headers.authorization());
+    public ResponseEntity verifyUser(@RequestBody String token) {
+        if(!jwtService.isTokenExpired(token)){
+            return ResponseEntity.ok(token);
         }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+           throw  new EcommerceException("This token is expired",HttpStatus.UNAUTHORIZED);
         }
     }
 }

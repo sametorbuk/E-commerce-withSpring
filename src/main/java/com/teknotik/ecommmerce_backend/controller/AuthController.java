@@ -57,5 +57,7 @@ public class AuthController {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
+    
+
 
 }
