@@ -8,6 +8,7 @@ import com.teknotik.ecommmerce_backend.entity.User;
 import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.repository.CrediCardRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class CardServiceImpl {
     }
 
 
+    @Transactional
     public CardResponse saveCard(String token, CreditCard creditCard) {
         tokenIsValid(token);
 
@@ -63,6 +65,7 @@ public class CardServiceImpl {
     }
 
 
+    @Transactional
     public CardResponse deleteCard(String token, long cardId) {
         tokenIsValid(token);
         if (cardId <= 0) {
@@ -85,6 +88,7 @@ public class CardServiceImpl {
     }
 
 
+    @Transactional
     public CardResponse updateCard(String token, CreditCard creditCard) {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));

@@ -8,6 +8,7 @@ import com.teknotik.ecommmerce_backend.entity.User;
 import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import com.teknotik.ecommmerce_backend.repository.AddressRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,6 +51,7 @@ public class AddressServiceImpl {
     }
 
 
+    @Transactional
     public Address saveAddress(String token, Address address) {
         tokenIsValid(token);
 
@@ -67,6 +69,7 @@ public class AddressServiceImpl {
     }
 
 
+    @Transactional
     public AddressResponse
     deleteAddress(String token, long id) {
         if (id <= 0) {
@@ -90,6 +93,7 @@ public class AddressServiceImpl {
         }
     }
 
+    @Transactional
     public AddressResponse updateAddress(String token, Address address) {
         tokenIsValid(token);
         Optional<User> foundUser = userRepository.findByEmail(jwtService.extractUsername(token));

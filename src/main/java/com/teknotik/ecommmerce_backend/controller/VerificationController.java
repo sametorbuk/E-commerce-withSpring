@@ -7,10 +7,7 @@ import com.teknotik.ecommmerce_backend.exceptions.EcommerceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -24,7 +21,7 @@ public class VerificationController {
     }
 
     @GetMapping
-    public ResponseEntity verifyUser(@RequestBody String token) {
+    public ResponseEntity verifyUser(@RequestHeader("Authorization") String token) {
         if(!jwtService.isTokenExpired(token)){
             return ResponseEntity.ok(token);
         }else{

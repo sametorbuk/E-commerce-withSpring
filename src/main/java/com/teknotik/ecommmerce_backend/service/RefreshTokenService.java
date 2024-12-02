@@ -6,6 +6,7 @@ import com.teknotik.ecommmerce_backend.entity.Role;
 import com.teknotik.ecommmerce_backend.entity.User;
 import com.teknotik.ecommmerce_backend.repository.RefreshTokenRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,11 +52,13 @@ public class RefreshTokenService {
     }
 
 
+    @Transactional
     public void deleteByUser(User user){
         refreshTokenRepository.deleteByUser(user);
     }
 
 
+    @Transactional
     public Map<String,String> createNewTokenWithRefresh(String refreshToken){
         User user = refreshTokenRepository.findByToken(refreshToken).get().getUser();
         Set<Role> roles = user.getRoles();

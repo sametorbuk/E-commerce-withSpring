@@ -10,6 +10,7 @@ import com.teknotik.ecommmerce_backend.repository.RoleRepository;
 import com.teknotik.ecommmerce_backend.repository.StoreRepository;
 import com.teknotik.ecommmerce_backend.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,7 @@ public class AuthenticationService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User customerRegister(String name, String email, String password) {
         Optional<User> foundUser = userRepository.findByEmail(email);
         if (foundUser.isPresent()) {
@@ -69,6 +71,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
 
+    @Transactional
     public User adminRegister(String name, String email, String password) {
         Optional<User> foundUser = userRepository.findByEmail(email);
         if (foundUser.isPresent()) {
@@ -94,6 +97,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
 
+    @Transactional
     public Store storeRegister(String name, String email, String password, String storeName, String storePhone, String storeTaxId, String storeBankAccount) {
         Optional<Store> foundUser = storeRepository.findByEmail(email);
         if (foundUser.isPresent()) {
@@ -116,6 +120,7 @@ public class AuthenticationService implements UserDetailsService {
 
     }
 
+    @Transactional
     public Map<String,String> login(LoginRequest loginRequest){
         Optional<User> foundUser =userRepository.findByEmail(loginRequest.email());
         Optional<Store> foundStore=storeRepository.findByEmail(loginRequest.email());
@@ -146,6 +151,7 @@ public class AuthenticationService implements UserDetailsService {
 
 
 
+    @Transactional
     public boolean authenticateUser(String username , String password){
         Optional<User> foundUser=userRepository.findByEmail(username);
         if(foundUser.isPresent()){
