@@ -84,7 +84,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private boolean validateToken(String token) {
-
         System.out.println("Validating token: " + token);
         return true;
     }
