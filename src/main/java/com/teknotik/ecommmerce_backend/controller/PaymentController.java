@@ -3,14 +3,15 @@ package com.teknotik.ecommmerce_backend.controller;
 import com.iyzipay.model.Payment;
 import com.teknotik.ecommmerce_backend.service.PaymentService;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
 
+    @Autowired
     private PaymentService paymentService;
-
 
     Dotenv dotenv = Dotenv.load();
 
