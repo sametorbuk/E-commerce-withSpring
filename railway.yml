@@ -1,9 +1,0 @@
-build:
-  dockerfile: Dockerfile
-  context: .
-deploy:
-  docker:
-    container:
-      image: ecommerce-backend
-      ports:
-        - "8080:8080"

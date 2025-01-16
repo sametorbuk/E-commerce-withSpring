@@ -20,7 +20,6 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
-
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
